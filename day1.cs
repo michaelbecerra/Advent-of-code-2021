@@ -45,6 +45,47 @@ static int GetMultipleMeasurementIncrease(string inputFile, int window) {
     return count;
 }
 
+static int GetCourse(string inputFile) {
+    int result = 0;
+    string[] lines = System.IO.File.ReadAllLines(inputFile);
+    int x_axis = 0, y_axis = 0;
+
+    for (int i = 0; i < lines.Length; i++) {
+        string[] values = lines[i].Split();
+        if (values[0] == "forward") {
+            x_axis += Int32.Parse(values[1]);
+        } else if (values[0] == "up") {
+            y_axis -= Int32.Parse(values[1]);
+        } else if (values[0] == "down") {
+            y_axis += Int32.Parse(values[1]);
+        }
+    }
+    result = x_axis * y_axis;
+    return result;
+}
+
+static int GetCourseAim(string inputFile) {
+    int result = 0;
+    string[] lines = System.IO.File.ReadAllLines(inputFile);
+    int x_axis = 0, y_axis = 0, aim = 0;
+
+    for (int i = 0; i < lines.Length; i++) {
+        string[] values = lines[i].Split();
+        if (values[0] == "forward") {
+            x_axis += Int32.Parse(values[1]);
+            y_axis = y_axis + aim * Int32.Parse(values[1]);
+        } else if (values[0] == "up") {
+            aim -= Int32.Parse(values[1]);
+        } else if (values[0] == "down") {
+            aim += Int32.Parse(values[1]);
+        }
+        Console.WriteLine("X = {0} - Y = {1} aim = {2}", x_axis, y_axis, aim);
+    }
+    result = x_axis * y_axis;
+    return result;
+}
+
+// Day 1
 // With function 1 
 int singleMeasurementIncrease_f1 = GetSingleMeasurementIncrease("./input.txt");
 
@@ -56,3 +97,10 @@ int multipleMeasurementIncrease = GetMultipleMeasurementIncrease("./input.txt", 
 
 Console.WriteLine("The result for single measurements with function 2 is " + singleMeasurementIncrease_f2);
 Console.WriteLine("The result for multiple measurements is " + multipleMeasurementIncrease);
+
+// Day 2
+int getCourse = GetCourse("./input_day2.txt");
+int getCourseAim = GetCourseAim("./input_day2.txt");
+
+Console.WriteLine("The course is " + getCourse);
+Console.WriteLine("The course aim is " + getCourseAim);
